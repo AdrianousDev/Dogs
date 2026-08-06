@@ -2,34 +2,49 @@ import { Link } from "react-router-dom";
 import Input from "../Forms/Input";
 import Button from "../Forms/Button";
 import useForm from "../../hooks/useForm";
+import { TOKEN_POST, USER_GET } from "../../api";
+import { useEffect } from "react";
 
 const LoginForm = () => {
     const username = useForm();
     const password = useForm();
 
+    const getUser = async (token) => {
+        const { url, options } = USER_GET(token);
+
+        const response = await fetch(url, options);
+
+        const json = await response.json();
+
+        console.log(json);
+    };
+
     const handleSubmit = async (event) => {
         event.preventDefault();
-        const api = import.meta.env.VITE_API_BASE_URL;
 
         if (username.validate() && password.validate()) {
-            const response = await fetch(`${api}/jwt-auth/v1/token`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    username: username.value,
-                    password: password.value,
-                }),
+            const { url, options } = TOKEN_POST({
+                username: username.value,
+                password: password.value,
             });
 
-            console.log(response);
+            const response = await fetch(url, options);
 
             const json = await response.json();
 
-            console.log(json);
+            window.localStorage.setItem("token", json.token);
+
+            getUser(json.token);
         }
     };
+
+    useEffect(() => {
+        const token = window.localStorage.getItem("token");
+
+        if (!token) return;
+
+        getUser(token);
+    }, []);
 
     return (
         <section>
