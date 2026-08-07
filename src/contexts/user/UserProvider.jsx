@@ -59,7 +59,10 @@ const UserProvider = ({ children }) => {
         const autoLogin = async () => {
             const token = window.localStorage.getItem("token");
 
-            if (!token) return;
+            if (!token) {
+                setLogin(false);
+                return;
+            }
 
             try {
                 setError(null);
