@@ -1,12 +1,20 @@
-import { Navigate } from "react-router-dom";
-import useUser from "../../contexts/user/useUser";
+import { Route, Routes } from "react-router-dom";
+import UserHeader from "./UserHeader";
+import Feed from "../Feed/Feed";
+import UserPhotoPost from "./UserPhotoPost";
+import UserStats from "./UserStats";
 
 const User = () => {
-    const { login } = useUser();
-
-    if (!login) return <Navigate to="/login" />;
-
-    return <div>Conta do usuário</div>;
+    return (
+        <section className="container">
+            <UserHeader />
+            <Routes>
+                <Route path="/" element={<Feed />} />
+                <Route path="/postar" element={<UserPhotoPost />} />
+                <Route path="/estatisticas" element={<UserStats />} />
+            </Routes>
+        </section>
+    );
 };
 
 export default User;

@@ -52,8 +52,7 @@ const UserProvider = ({ children }) => {
         setloading(false);
         setLogin(false);
         window.localStorage.removeItem("token");
-        navigate("/login");
-    }, [navigate]);
+    }, []);
 
     useEffect(() => {
         const autoLogin = async () => {
