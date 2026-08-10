@@ -50,6 +50,16 @@ export const USER_POST = (body) => {
     };
 };
 
+export const PHOTO_GET = (id) => {
+    return {
+        url: `${API_URL}/api/photo/${id}`,
+        options: {
+            method: "GET",
+            cache: "no-store",
+        },
+    };
+};
+
 export const PHOTO_POST = (formData, token) => {
     return {
         url: API_URL + "/api/photo",
