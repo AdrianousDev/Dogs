@@ -1,15 +1,21 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import useUser from "../../contexts/user/useUser";
 import PhotoCommentsForm from "./PhotoCommentsForm";
 import styles from "./PhotoComments.module.css";
 
 const PhotoComments = (props) => {
     const [comments, setComments] = useState(() => props.comments);
+    const commentsSections = useRef(null);
     const { login } = useUser();
+
+    useEffect(() => {
+        commentsSections.current.scrollTop =
+            commentsSections.current.scrollHeight;
+    }, [comments]);
 
     return (
         <>
-            <ul className={styles.comments}>
+            <ul ref={commentsSections} className={styles.comments}>
                 {comments.map((comment) => (
                     <li key={comment.comment_ID}>
                         <b>{comment.comment_author}: </b>
